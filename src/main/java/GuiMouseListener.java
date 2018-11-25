@@ -14,8 +14,8 @@ public class GuiMouseListener implements MouseListener {
   private Gui gui;
 
   /**
-   * The constructor of a MouseListener.
-   * Gets called by every button
+   * The constructor of a MouseListener. Gets called by every button
+   *
    * @param gui see gui attribute
    * @param id see id attribute
    */
@@ -25,9 +25,7 @@ public class GuiMouseListener implements MouseListener {
   }
 
   /**
-   * Called automatically when the mouse clicks on a button.
-   * Invoked gui.buttonCallback(id)
-   * @param e
+   * Called automatically when the mouse clicks on a button. Invokes gui.buttonCallback(id)
    */
   @Override
   public void mouseClicked(MouseEvent e) {
