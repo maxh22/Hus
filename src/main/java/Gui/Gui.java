@@ -100,10 +100,12 @@ public class Gui {
     }
 
     for (int i = 16; i <= 23; i++) {
+      buttons[i].setBackground(new Color(153, 102, 0));
       panel.add(buttons[i]);
     }
 
     for (int i = 31; i >= 24; i--) {
+      buttons[i].setBackground(new Color(153, 102, 0));
       panel.add(buttons[i]);
     }
 
