@@ -21,12 +21,15 @@ public class Main {
         gui.update(playingField);
         if(playingField.getGameState() == GameState.PLAYER1_WON) {
             System.out.println("Player 1 won!");
+            gameFinished();
         } else if(playingField.getGameState() == GameState.PLAYER2_WON) {
             System.out.println("Player 2 won!");
+            gameFinished();
         }
     }
 
     public static void gameFinished() {
+        gui.update(playingField);
         gui.gameFinished();
     }
 }

@@ -31,13 +31,28 @@ public class PlayingField {
      * @return an int array {nearest opposing hole; second-nearest opposing hole}
      */
     public int[] getOpposingHoleIds(int id) {
-        if(id >= 8 && id <= 15) {
-            return new int[] {id+8, id+16};
-        } else if (id >= 16 && id <= 23) {
-            return new int[] {id-8, id-16};
-        } else {
-            return null;
+        // TODO implement this in a non-hardcoded way
+        switch(id) {
+            // player 1
+            case 8:return new int[] {23,24};
+            case 9:return new int[] {22,25};
+            case 10:return new int[] {21,26};
+            case 11:return new int[] {20,27};
+            case 12:return new int[] {19,28};
+            case 13:return new int[] {18,29};
+            case 14:return new int[] {17,30};
+            case 15:return new int[] {16,31};
+            // player 2
+            case 16:return new int[] {23,24};
+            case 17:return new int[] {22,25};
+            case 18:return new int[] {21,26};
+            case 19:return new int[] {20,27};
+            case 20:return new int[] {19,28};
+            case 21:return new int[] {18,29};
+            case 22:return new int[] {17,30};
+            case 23:return new int[] {16,31};
         }
+        return null;
     }
 
     /**
@@ -45,7 +60,7 @@ public class PlayingField {
      * Help method for makeMove()
      * @param id the hole ID
      */
-    private int getFollowingHoleId(int id) {
+    public int getFollowingHoleId(int id) {
         if(id <= 15) {
             return (id+1) % 16;
         } else {
@@ -113,10 +128,8 @@ public class PlayingField {
         }
         if(player1lost) {
             this.gameState = GameState.PLAYER2_WON;
-            Main.gameFinished();
         } else if (player2lost) {
             this.gameState = GameState.PLAYER1_WON;
-            Main.gameFinished();
         } else {
             this.gameState = GameState.RUNNING;
         }
@@ -174,6 +187,10 @@ public class PlayingField {
             }
         }
         return true;
+    }
+
+    public int[] getHoles() {
+        return holes;
     }
 
     public int getNumberOfStones(int holeID) {
