@@ -11,23 +11,24 @@ public class PlayingField {
     }
 
     private void init() {
-        for (int i = 0; i < 32; i++){
-            holes[i] = i;
+        //for (int i = 0; i < 32; i++){
+        //    holes[i] = i;
+        //}
+        for (int i = 0; i <= 7; i++) {
+            holes[i] = 2;
         }
-//        for (int i = 0; i <= 7; i++) {
-//            holes[i] = 2;
-//        }
-//
-//        for (int i = 12; i <= 15; i++) {
-//            holes[i] = 2;
-//        }
-//
-//        for (int i = 20; i <= 31; i++) {
-//            holes[i] = 2;
-//        }
+
+        for (int i = 12; i <= 15; i++) {
+            holes[i] = 2;
+        }
+
+        for (int i = 20; i <= 31; i++) {
+            holes[i] = 2;
+        }
     }
 
     public void makeMove(int startingHole) {
+        System.out.println("makeMove Start");
         boolean moveFinished = false;
         if (!isGameFinished()) {
             while (!moveFinished) {
@@ -60,6 +61,7 @@ public class PlayingField {
                 }
             }
         }
+        System.out.println("makeMove End");
     }
 
     private boolean isGameFinished() {
