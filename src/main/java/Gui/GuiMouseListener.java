@@ -1,3 +1,7 @@
+package Gui;
+
+import Gui.Gui;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -9,7 +13,7 @@ public class GuiMouseListener implements MouseListener {
   private int id;
 
   /**
-   * The Gui, which the callback is sent to (via Gui.buttonCallback(int id))
+   * The Hus.Gui, which the callback is sent to (via Hus.Gui.buttonCallback(int id))
    */
   private Gui gui;
 
@@ -19,7 +23,7 @@ public class GuiMouseListener implements MouseListener {
    * @param gui see gui attribute
    * @param id see id attribute
    */
-  public GuiMouseListener(Gui gui, int id) {
+  protected GuiMouseListener(Gui gui, int id) {
     this.id = id;
     this.gui = gui;
   }
