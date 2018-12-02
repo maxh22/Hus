@@ -2,18 +2,16 @@ package Hus;
 
 public class PlayingField {
 
-    private final int numberOfHoles = 32;
 
-    private int[] holes = new int[numberOfHoles];
+    private int[] holes = new int[32];
+    private GameState gameState;
 
     public PlayingField() {
         init();
     }
 
     private void init() {
-        //for (int i = 0; i < 32; i++){
-        //    holes[i] = i;
-        //}
+        this.gameState = GameState.RUNNING;
         for (int i = 0; i <= 7; i++) {
             holes[i] = 2;
         }
@@ -27,10 +25,115 @@ public class PlayingField {
         }
     }
 
-    public void makeMove(int startingHole) {
+    /**
+     * Returns the opposing holes IDs (the one the current player can steal from)
+     * @param id the current hole ID
+     * @return an int array {nearest opposing hole; second-nearest opposing hole}
+     */
+    public int[] getOpposingHoleIds(int id) {
+        if(id >= 8 && id <= 15) {
+            return new int[] {id+8, id+16};
+        } else if (id >= 16 && id <= 23) {
+            return new int[] {id-8, id-16};
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Returns the next stone (clock-wise)
+     * Help method for makeMove()
+     * @param id the hole ID
+     */
+    private int getFollowingHoleId(int id) {
+        if(id <= 15) {
+            return (id+1) % 16;
+        } else {
+            return ((id-16+1) % 16) + 16;
+        }
+    }
+
+    /**
+     * Executes a move and recalculates the PlayingField.
+     * Also updates the gameState
+     * @param startingHole
+     * @return true if success, false if move was invalid
+     */
+    public boolean makeMove(int startingHole) {
+        if(getNumberOfStones(startingHole) < 2) {
+            return false;
+        }
+
+        int currentId = startingHole;
+        int remainingStones = getNumberOfStones(currentId);
+        setNumberOfStones(currentId, 0);
+        while(remainingStones > 0) {
+            currentId = getFollowingHoleId(currentId);
+            setNumberOfStones(currentId, getNumberOfStones(currentId) + 1);
+            remainingStones--;
+            if(remainingStones == 0 && getNumberOfStones(currentId) > 1) {
+                remainingStones = getNumberOfStones(currentId);
+                setNumberOfStones(currentId, 0);
+                // Now look if the player can steal stones using help method getOpposingHoleIds()
+                int[] opposingHoles = getOpposingHoleIds(currentId);
+                if(opposingHoles != null) {
+                    if(getNumberOfStones(opposingHoles[0]) > 0) {
+                        remainingStones += getNumberOfStones(opposingHoles[0]);
+                        remainingStones += getNumberOfStones(opposingHoles[1]);
+                        int stolen = getNumberOfStones(opposingHoles[0]) + getNumberOfStones(opposingHoles[1]);
+                        setNumberOfStones(opposingHoles[0], 0);
+                        setNumberOfStones(opposingHoles[1], 0);
+                        System.out.println(currentId + " stole " + stolen + " stones from " + opposingHoles[0] + " and " + opposingHoles[1]);
+                    }
+                }
+            }
+        }
+        updateGameState();
+
+        return true;
+    }
+
+    /**
+     * Determines the current game state and stores it into this.gameState
+     */
+    private void updateGameState() {
+        boolean player1lost = true;
+        boolean player2lost = true;
+        for (int i = 0; i < 16; i++) {
+            if (getNumberOfStones(i) > 1) {
+                player1lost = false;
+                break;
+            }
+        }
+        for (int i = 16; i < 32; i++) {
+            if (getNumberOfStones(i) > 1) {
+                player2lost = false;
+                break;
+            }
+        }
+        if(player1lost) {
+            this.gameState = GameState.PLAYER2_WON;
+            Main.gameFinished();
+        } else if (player2lost) {
+            this.gameState = GameState.PLAYER1_WON;
+            Main.gameFinished();
+        } else {
+            this.gameState = GameState.RUNNING;
+        }
+    }
+
+    /**
+     * Returns the current gameState to determine if the game is over (see GameState.java)
+     * @return
+     */
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public void makeMoveOld(int startingHole) {
         System.out.println("makeMove Start");
         boolean moveFinished = false;
-        if (!isGameFinished()) {
+        if (!isGameFinishedOld()) {
             while (!moveFinished) {
                 if (holes[startingHole] > 1) {
                     int stonesInStartingHole = holes[startingHole];
@@ -64,8 +167,8 @@ public class PlayingField {
         System.out.println("makeMove End");
     }
 
-    private boolean isGameFinished() {
-        for (int i = 0; i < numberOfHoles; i++) {
+    private boolean isGameFinishedOld() {
+        for (int i = 0; i < 32; i++) {
             if (holes[i] > 1) {
                 return false;
             }
@@ -75,5 +178,8 @@ public class PlayingField {
 
     public int getNumberOfStones(int holeID) {
         return holes[holeID];
+    }
+    public void setNumberOfStones(int holeID, int value) {
+        this.holes[holeID] = value;
     }
 }

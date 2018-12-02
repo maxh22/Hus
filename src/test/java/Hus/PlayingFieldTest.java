@@ -1,7 +1,5 @@
 package Hus;
 
-import Hus.PlayingField;
-import org.junit.Assert;
 import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 

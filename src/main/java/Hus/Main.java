@@ -14,8 +14,19 @@ public class Main {
     }
 
     public static void buttonClicked(int id) {
-        playingField.makeMove(id);
+        if(!playingField.makeMove(id)) {
+            System.out.println("Invalid move! There must be at least 2 stones in the chosen hole.");
+            // TODO maybe show warning in a textfield or something
+        }
         gui.update(playingField);
+        if(playingField.getGameState() == GameState.PLAYER1_WON) {
+            System.out.println("Player 1 won!");
+        } else if(playingField.getGameState() == GameState.PLAYER2_WON) {
+            System.out.println("Player 2 won!");
+        }
     }
 
+    public static void gameFinished() {
+        gui.gameFinished();
+    }
 }
