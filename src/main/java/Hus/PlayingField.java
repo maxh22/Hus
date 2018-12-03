@@ -58,15 +58,6 @@ public class PlayingField {
         return false;
     }
 
-    private boolean isGameFinished() {
-        for (int i = 0; i < numberOfHoles; i++) {
-            if (stonesInHole[i] > 1) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public int getNumberOfStones(int holeID) {
         return stonesInHole[holeID];
     }
