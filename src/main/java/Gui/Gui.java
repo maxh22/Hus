@@ -25,6 +25,10 @@ public class Gui {
   private final int numberOfHoles = 32;
 
   /**
+   * Specifies if the game has already finished and thus should not be modifiable anymore
+   */
+  private boolean finished;
+  /**
    * The JFrame which is used to visualize the game and holds every Hus.Gui component
    */
   private JFrame frame;
@@ -51,6 +55,7 @@ public class Gui {
   public Gui() {
     // TODO maybe add a text field above the buttons
     //      for messages/information like whose turn it is, game time, etc.
+    this.finished = false;
     this.frame = new JFrame();
     this.panel = new JPanel(new GridLayout(4, 8));
     this.buttons = new JButton[numberOfHoles];
@@ -90,6 +95,7 @@ public class Gui {
   /*
     Public Methods
    */
+
   private void panelCreator() {
     for (int i = 0; i <= 7; i++) {
       panel.add(buttons[i]);
@@ -117,11 +123,25 @@ public class Gui {
    * @param playingField the playingField which has to be displayed
    */
   public void update(PlayingField playingField) {
+    if(finished)
+      return;
     for (int i = 0; i < buttons.length; i++) {
       buttons[i].setText(String.valueOf(playingField.getNumberOfStones(i)));
     }
   }
 
+  /**
+   * Called when one player has one, so no further moves are possible
+   */
+  public void gameFinished() {
+    finished = true;
+    for (int i = 0; i < buttons.length; i++) {
+      buttons[i].setEnabled(false);
+      for(int j = 0; j < buttons[i].getMouseListeners().length; j++) {
+        buttons[i].removeMouseListener(buttons[i].getMouseListeners()[j]);
+      }
+    }
+  }
 
   /**
    * This method gets called by Hus.GuiMouseListener when a button gets clicked with the mouse
