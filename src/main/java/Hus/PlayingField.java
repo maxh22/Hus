@@ -72,4 +72,8 @@ public class PlayingField {
             stonesInHole[holesOnTheOpposite[1]] = 0;
         }
     }
+
+    public int[] getStonesInHole() {
+        return stonesInHole;
+    }
 }
