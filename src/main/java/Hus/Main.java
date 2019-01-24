@@ -13,7 +13,7 @@ public class Main {
         gui.update(playingField);
     }
 
-    public static void makeMove(int id){
+    public static void makeMove(int id) {
         playingField.makeMove(id);
         gui.update(playingField);
     }

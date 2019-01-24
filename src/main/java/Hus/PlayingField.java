@@ -8,6 +8,9 @@ public class PlayingField {
 
     private int[] stonesInHole = new int[numberOfHoles];
 
+    private int startingHole;
+    private int landingHole;
+
     PlayingField() {
         init();
     }
@@ -26,12 +29,14 @@ public class PlayingField {
         }
     }
 
-    void makeMove(int startingHole) {
+    void makeMove(int holeToStartFrom) {
+        startingHole = holeToStartFrom;
+
         while (stonesInHole[startingHole] > 1) {
 
-            int landingHole = startingHole + stonesInHole[startingHole];
+            landingHole = startingHole + stonesInHole[startingHole];
 
-            moveStones(startingHole, landingHole);
+            moveStones();
 
             stonesInHole[startingHole] = 0;
 
@@ -43,7 +48,7 @@ public class PlayingField {
         }
     }
 
-    private void moveStones(int startingHole, int landingHole) {
+    private void moveStones() {
         for (int i = startingHole + 1; i <= landingHole; i++) {
             if (endOfLineReached(i)) {
                 i -= 16;
