@@ -8,7 +8,7 @@ public class PlayingField {
 
     private int[] stonesInHole = new int[numberOfHoles];
 
-    public PlayingField() {
+    PlayingField() {
         init();
     }
 
@@ -26,54 +26,61 @@ public class PlayingField {
         }
     }
 
-    public void makeMove(int startingHole) {
+    void makeMove(int startingHole) {
         while (stonesInHole[startingHole] > 1) {
+
             int landingHole = startingHole + stonesInHole[startingHole];
-            for (int i = startingHole + 1; i <= landingHole; i++) {
-                if (endOfLineReached(i)) {
-                    i -= 16;
-                    landingHole -= 16;
-                }
-                stonesInHole[i]++;
-            }
+
+            moveStones(startingHole, landingHole);
+
             stonesInHole[startingHole] = 0;
-            if (isInFrontLine(landingHole) && stonesInHole[landingHole] > 1) {
+
+            if (isHoleInFrontLine(landingHole) && stonesInHole[landingHole] > 1) {
                 stealStones(landingHole);
             }
+
             startingHole = landingHole;
         }
     }
 
-    private boolean endOfLineReached(int holeID) {
-        if (holeID == 16 || holeID == 32) {
-            return true;
+    private void moveStones(int startingHole, int landingHole) {
+        for (int i = startingHole + 1; i <= landingHole; i++) {
+            if (endOfLineReached(i)) {
+                i -= 16;
+                landingHole -= 16;
+            }
+            stonesInHole[i]++;
         }
-        return false;
     }
 
-    private boolean isInFrontLine(int holeID) {
-        if (holeID > 7 && 24 > holeID) {
-            return true;
-        }
-        return false;
+    private boolean endOfLineReached(int holeID) {
+        return holeID == 16 || holeID == 32;
+    }
+
+    private boolean isHoleInFrontLine(int holeID) {
+        return holeID > 7 && 24 > holeID;
     }
 
     public int getNumberOfStones(int holeID) {
         return stonesInHole[holeID];
     }
 
-    public void stealStones(int holeID) {
+    void stealStones(int holeID) {
         int[] holesOnTheOpposite;
+
         holesOnTheOpposite = HoleMappingHelper.getIdOfOppositeHole(holeID);
+
         int stonesInBothOppositeHoles = stonesInHole[holesOnTheOpposite[0]] + stonesInHole[holesOnTheOpposite[1]];
+
         if (stonesInHole[holesOnTheOpposite[0]] > 0) {
+
             stonesInHole[holeID] += stonesInBothOppositeHoles;
             stonesInHole[holesOnTheOpposite[0]] = 0;
             stonesInHole[holesOnTheOpposite[1]] = 0;
         }
     }
 
-    public int[] getStonesInHole() {
+    int[] getStonesInHole() {
         return stonesInHole;
     }
 }
